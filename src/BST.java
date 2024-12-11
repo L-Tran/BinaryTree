@@ -47,23 +47,25 @@ public class BST {
      * @return true if val is in the tree, false otherwise
      */
     public boolean search(int val) {
-        // TODO: Complete the search function
+        // return results of helper variable
         return searchHelper(root, val);
     }
 
-    public boolean searchHelper(BSTNode tempRoot, int val) {
-        if (tempRoot == null) {
+    public boolean searchHelper(BSTNode node, int val) {
+        // If the val is not in the tree
+        if (node == null) {
             return false;
         }
-        if (tempRoot.getVal() == val){
+        // If the val is in the tree
+        if (node.getVal() == val){
             return true;
         }
-
-        if (tempRoot.getVal() < val){
-            return searchHelper(tempRoot.getLeft(), val);
+        // Use recursion depending on direction from the node (Bc of val)
+        if (val > node.getVal()){
+            return searchHelper(node.getRight(), val);
         }
         else {
-            return searchHelper(tempRoot.getLeft(), val);
+            return searchHelper(node.getLeft(), val);
         }
     }
 
@@ -71,24 +73,63 @@ public class BST {
      * @return ArrayList of BSTNodes in inorder
      */
     public ArrayList<BSTNode> getInorder() {
-        // TODO: Complete inorder traversal
-        return null;
+        // Create a list to return
+        ArrayList <BSTNode> list = new ArrayList<BSTNode>();
+        // Add to list from Helper
+        getInorderHelper(root, list);
+        return list;
+    }
+
+    public void getInorderHelper(BSTNode node, ArrayList<BSTNode> list) {
+        // If node exists
+        if (node != null) {
+            // Add in left root right
+            getInorderHelper(node.getLeft(), list);
+            list.add(node);
+            getInorderHelper(node.getRight(), list);
+        }
     }
 
     /**
      * @return ArrayList of BSTNodes in preorder
      */
     public ArrayList<BSTNode> getPreorder() {
-        // TODO: Complete preorder traversal
-        return null;
+        // Create a list to return
+        ArrayList <BSTNode> list = new ArrayList<BSTNode>();
+        // Add to list using helper function
+        getPreorderHelper(root, list);
+        return list;
+    }
+
+    public void getPreorderHelper (BSTNode node, ArrayList<BSTNode> list) {
+        // If the node exists
+        if (node != null) {
+            // Add in root left right
+            list.add(node);
+            getPreorderHelper(node.getLeft(), list);
+            getPreorderHelper(node.getRight(), list);
+        }
     }
 
     /**
      * @return ArrayList of BSTNodes in postorder
      */
     public ArrayList<BSTNode> getPostorder() {
-        // TODO: Complete postorder traversal
-        return null;
+        // Create a list to return
+        ArrayList <BSTNode> list = new ArrayList<BSTNode>();
+        // Add to list using helper function
+        getPostorderHelper(root, list);
+        return list;
+    }
+
+    public void getPostorderHelper (BSTNode node, ArrayList<BSTNode> list) {
+        // If node exists
+        if (node != null) {
+            // Add in left right root
+            getPostorderHelper(node.getLeft(), list);
+            getPostorderHelper(node.getRight(), list);
+            list.add(node);
+        }
     }
 
     /**
@@ -98,7 +139,36 @@ public class BST {
      * @param val The value ot insert
      */
     public void insert(int val) {
-        // TODO: Complete insert
+        // If the value is not in the tree
+        if(!search(val)) {
+            // Use helper function to find where and insert
+            insertHelper(root, val);
+        }
+    }
+
+    public void insertHelper (BSTNode node, int val) {
+        // If the value is less check left
+        if (val < node.getVal()) {
+            // if left spot it empty then add
+            if(node.getLeft() == null) {
+                node.setLeft(new BSTNode(val));
+            }
+            // If it is not empty then go left
+            else {
+                insertHelper(node.getLeft(), val);
+            }
+        }
+        // If the value is greater check right
+        if (val > node.getVal()) {
+            // if right spot is empty then add
+            if(node.getRight() == null) {
+                node.setRight(new BSTNode(val));
+            }
+            // If it is not empty then go right
+            else {
+                insertHelper(node.getRight(), val);
+            }
+        }
     }
 
     /**
